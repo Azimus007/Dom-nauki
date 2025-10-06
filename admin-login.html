@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в админ-панель - Дом Науки</title>
+    <link rel="stylesheet" href="CSS DOM NAUKI.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .login-form input {
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-family: 'Cuprum', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .login-form input:focus {
+            outline: none;
+            border-color: #0d2b14;
+        }
+        
+        .login-error {
+            color: #dc3545;
+            background: #fff5f5;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #fed7d7;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Дом Науки</h1>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="login-container">
+                <h2>Вход в админ-панель</h2>
+                <form class="login-form" id="loginForm">
+                    <input type="password" id="password" placeholder="Введите пароль" required>
+                    <button type="submit" class="btn-primary">Войти</button>
+                </form>
+                <div class="login-error" id="loginError">
+                    Неверный пароль!
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            // Пароль: admin123 (можете поменять)
+            if (password === 'admin123') {
+                localStorage.setItem('adminAuthenticated', 'true');
+                window.location.href = 'admin-panel.html';
+            } else {
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

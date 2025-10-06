@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подача статьи - Дом Науки</title>
+    <link rel="stylesheet" href="CSS DOM NAUKI.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cuprum:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Дом Науки</h1>
+            <nav class="nav">
+                <a href="DOM NAUKI.html" class="nav-btn">Главная</a>
+                <a href="about.html" class="nav-btn">О журнале</a>
+                <a href="authors.html" class="nav-btn">Авторам</a>
+                <a href="archive.html" class="nav-btn">Архив</a>
+                <a href="contacts.html" class="nav-btn">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="content-section">
+                <h2>Подача статьи</h2>
+                
+                <div class="content-card">
+                    <form class="submission-form" id="article-submission-form" action="send-article.php" method="POST" enctype="multipart/form-data">
+                        <h3>Информация об авторах</h3>
+                        
+                        <!-- Автор 1 (обязательный) -->
+                        <!-- Автор 1 -->
+<div class="author-section required-field">
+    <label>ФИО (должность) <span class="required-mark">*</span></label>
+    <input type="text" name="author1_name" placeholder="Иванов Иван Иванович (студент)" required>
+    <label>Научное учреждение или место работы <span class="required-mark">*</span></label>
+    <input type="text" name="author1_affiliation" placeholder="Московский государственный университет" required>
+</div>
+
+<!-- Автор 2 -->
+<div class="author-section">
+    <label>ФИО (должность)</label>
+    <input type="text" name="author2_name" placeholder="Петрова Мария Сергеевна (к.т.н.)">
+    <label>Научное учреждение или место работы</label>
+    <input type="text" name="author2_affiliation" placeholder="Научно-исследовательский институт">
+</div>
+
+<!-- Автор 3 -->
+<div class="author-section">
+    <label>ФИО (должность)</label>
+    <input type="text" name="author3_name" placeholder="Сидоров Алексей Петрович (д.ф.-м.н.)">
+    <label>Научное учреждение или место работы</label>
+    <input type="text" name="author3_affiliation" placeholder="Академия наук">
+</div>
+
+<!-- Автор 4 -->
+<div class="author-section">
+    <label>ФИО (должность)</label>
+    <input type="text" name="author4_name" placeholder="Козлова Анна Владимировна (аспирант)">
+    <label>Научное учреждение или место работы</label>
+    <input type="text" name="author4_affiliation" placeholder="Технический университет">
+</div>
+
+<!-- Автор 5 -->
+<div class="author-section">
+    <label>ФИО (должность)</label>
+    <input type="text" name="author5_name" placeholder="Николаев Дмитрий Олегович (с.н.с.)">
+    <label>Научное учреждение или место работы</label>
+    <input type="text" name="author5_affiliation" placeholder="Институт физики">
+</div>
+
+<!-- Название статьи -->
+<div class="form-group required-field">
+    <label>Название статьи <span class="required-mark">*</span></label>
+    <input type="text" name="article_title" placeholder="Введите полное название статьи" required>
+</div>
+
+<!-- Электронная почта -->
+<div class="form-group required-field">
+    <label>Электронная почта для связи <span class="required-mark">*</span></label>
+    <input type="email" name="author_email" placeholder="example@email.com" required>
+</div>
+
+<!-- Чекбокс -->
+
+                        <!-- Файл статьи -->
+<div class="form-group required-field">
+    <label>Файл статьи (DOC, DOCX, PDF) <span class="required-mark">*</span></label>
+    <input type="file" name="article_file" accept=".doc,.docx,.pdf" required>
+</div>
+
+                        <!-- Соглашение -->
+                        <div class="agreement-section required-field">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="agreement" required>
+                                <span class="checkmark"></span>
+                                Я принимаю условия публикации и подтверждаю, что статья является оригинальной работой <span class="required-mark">*</span>
+                            </label>
+                        </div>
+
+                        <!-- Кнопка отправки -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Отправить материал</button>
+                            <a href="../index.html" class="btn-secondary">Отмена</a>
+                        </div>
+
+                        <!-- Блок с сообщением об ошибке -->
+                        <div id="error-message" class="error-message" style="display: none;">
+                            <div class="error-icon">⚠️</div>
+                            <div class="error-content">
+                                <strong>ВАЖНО!!!</strong>
+                                <p>Пожалуйста, заполните все обязательные поля, отмеченные <span class="required-mark">*</span></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024-2025 Дом Науки. Все права защищены.</p>
+            <div class="footer-links">
+                <a href="terms.html">Условия использования</a>
+                <a href="terms.html">Конфиденциальность</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.getElementById('article-submission-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const requiredFields = this.querySelectorAll('input[required]');
+    const checkbox = this.querySelector('input[type="checkbox"]');
+    let isValid = true;
+    
+    // Проверка обязательных полей
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = '#dc3545';
+            field.style.backgroundColor = '#fff5f5';
+        } else {
+            field.style.borderColor = '#e9ecef';
+            field.style.backgroundColor = 'white';
+        }
+    });
+    
+    // Проверка чекбокса
+    if (!checkbox.checked) {
+        isValid = false;
+        document.querySelector('.agreement-section').style.backgroundColor = '#fff5f5';
+        document.querySelector('.agreement-section').style.border = '2px solid #fed7d7';
+        document.querySelector('.agreement-section').style.borderRadius = '6px';
+        document.querySelector('.agreement-section').style.padding = '1rem';
+    } else {
+        document.querySelector('.agreement-section').style.backgroundColor = '';
+        document.querySelector('.agreement-section').style.border = '';
+        document.querySelector('.agreement-section').style.padding = '';
+    }
+    
+    if (!isValid) {
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message';
+        errorMessage.innerHTML = `
+            <div class="error-icon">⚠️</div>
+            <div class="error-content">
+                <strong>ВАЖНО!!!</strong>
+                <p>Пожалуйста, заполните все обязательные поля, отмеченные <span class="required-mark">*</span></p>
+            </div>
+        `;
+        
+        this.appendChild(errorMessage);
+        errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        setTimeout(() => {
+            errorMessage.remove();
+        }, 5000);
+        
+        return;
+    }
+    
+    // Сохраняем данные в LocalStorage
+    const formData = new FormData(this);
+    const fileInput = this.querySelector('input[type="file"]');
+    
+    // Читаем файл как Data URL
+    const fileReader = new FileReader();
+    fileReader.onload = function(e) {
+        const authors = [];
+        for (let i = 1; i <= 5; i++) {
+            const name = document.querySelector(`input[name="author${i}_name"]`)?.value;
+            const affiliation = document.querySelector(`input[name="author${i}_affiliation"]`)?.value;
+            if (name && affiliation) {
+                authors.push({ name, affiliation });
+            }
+        }
+        
+        const submission = {
+            articleTitle: document.querySelector('input[name="article_title"]').value,
+            authorEmail: document.querySelector('input[name="author_email"]').value,
+            authors: authors,
+            fileName: fileInput.files[0].name,
+            fileSize: Math.round(fileInput.files[0].size / 1024),
+            fileType: fileInput.files[0].type,
+            fileData: e.target.result,
+            date: new Date().toLocaleString('ru-RU')
+        };
+        
+        // Сохраняем в LocalStorage
+        const existingSubmissions = JSON.parse(localStorage.getItem('articleSubmissions') || '[]');
+        existingSubmissions.unshift(submission);
+        localStorage.setItem('articleSubmissions', JSON.stringify(existingSubmissions));
+        
+        // Переходим на страницу успеха
+        window.location.href = 'success.html';
+    };
+    
+    fileReader.readAsDataURL(fileInput.files[0]);
+});
+
+// Убрать стили ошибки при вводе
+document.querySelectorAll('input[required]').forEach(input => {
+    input.addEventListener('input', function() {
+        if (this.value.trim()) {
+            this.style.borderColor = '#e9ecef';
+            this.style.backgroundColor = 'white';
+        }
+    });
+});
+
+// Для чекбокса
+document.querySelector('input[type="checkbox"]').addEventListener('change', function() {
+    if (this.checked) {
+        document.querySelector('.agreement-section').style.backgroundColor = '';
+        document.querySelector('.agreement-section').style.border = '';
+        document.querySelector('.agreement-section').style.padding = '';
+    }
+});
+</script>
+</body>
+</html>

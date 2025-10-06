@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Дом Науки</title>
+    <link rel="stylesheet" href="CSS DOM NAUKI.css">
+    <style>
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #0d2b14;
+        }
+        
+        .submissions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .submission-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #0d2b14;
+        }
+        
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .submission-title {
+            font-size: 1.3rem;
+            color: #0d2b14;
+            margin: 0;
+        }
+        
+        .submission-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .authors-list {
+            margin: 1rem 0;
+        }
+        
+        .author-item {
+            padding: 0.5rem;
+            background: #f8f9fa;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .file-info {
+            background: #e8f5e8;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
+        }
+        
+        .logout-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Дом Науки</h1>
+            <nav class="nav">
+                <a href="DOM NAUKI.html" class="nav-btn">Главная</a>
+                <button class="nav-btn logout-btn" onclick="logout()">Выйти</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="admin-header">
+                <h2>Админ-панель - Присланные статьи</h2>
+                <button class="btn-primary" onclick="clearSubmissions()">Очистить все</button>
+            </div>
+
+            <div class="submissions-list" id="submissionsList">
+                <!-- Сюда будут добавляться статьи -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Проверка авторизации
+        if (!localStorage.getItem('adminAuthenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Загрузка данных из LocalStorage
+        function loadSubmissions() {
+            const submissions = JSON.parse(localStorage.getItem('articleSubmissions') || '[]');
+            const container = document.getElementById('submissionsList');
+            
+            if (submissions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Пока нет присланных статей</h3>
+                        <p>Статьи появятся здесь после отправки авторами через форму на сайте</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = submissions.map((submission, index) => `
+                <div class="submission-card">
+                    <div class="submission-header">
+                        <h3 class="submission-title">${submission.articleTitle}</h3>
+                        <span class="submission-date">${submission.date}</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <strong>Email для связи:</strong> ${submission.authorEmail}
+                    </div>
+                    
+                    <div class="authors-list">
+                        <strong>Авторы:</strong>
+                        ${submission.authors.map(author => `
+                            <div class="author-item">
+                                <strong>${author.name}</strong><br>
+                                ${author.affiliation}
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="file-info">
+                        <strong>Файл статьи:</strong> ${submission.fileName}<br>
+                        <strong>Размер:</strong> ${submission.fileSize} KB<br>
+                        <strong>Тип:</strong> ${submission.fileType}
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn-primary" onclick="downloadFile(${index})">Скачать файл</button>
+                        <button class="btn-secondary" onclick="deleteSubmission(${index})">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Скачать файл
+        function downloadFile(index) {
+            const submissions = JSON.parse(localStorage.getItem('articleSubmissions') || '[]');
+            const submission = submissions[index];
+            
+            if (submission && submission.fileData) {
+                const link = document.createElement('a');
+                link.href = submission.fileData;
+                link.download = submission.fileName;
+                link.click();
+            }
+        }
+
+        // Удалить заявку
+        function deleteSubmission(index) {
+            if (confirm('Удалить эту заявку?')) {
+                const submissions = JSON.parse(localStorage.getItem('articleSubmissions') || '[]');
+                submissions.splice(index, 1);
+                localStorage.setItem('articleSubmissions', JSON.stringify(submissions));
+                loadSubmissions();
+            }
+        }
+
+        // Очистить все
+        function clearSubmissions() {
+            if (confirm('Удалить ВСЕ заявки?')) {
+                localStorage.removeItem('articleSubmissions');
+                loadSubmissions();
+            }
+        }
+
+        // Выйти
+        function logout() {
+            localStorage.removeItem('adminAuthenticated');
+            window.location.href = 'admin-login.html';
+        }
+
+        // Загружаем данные при открытии
+        loadSubmissions();
+    </script>
+</body>
+</html>

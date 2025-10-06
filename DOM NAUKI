@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статьи - Минималистичный блог</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Статьи</h1>
+            <nav class="nav">
+                <button class="nav-btn" onclick="showSection('articles')">Все статьи</button>
+                <button class="nav-btn" onclick="showSection('add-article')">Добавить статью</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Секция со списком статей -->
+            <section id="articles-section" class="section active">
+                <h2>Все статьи</h2>
+                <div id="articles-list" class="articles-grid">
+                    <!-- Статьи будут добавляться через JavaScript -->
+                </div>
+            </section>
+
+            <!-- Секция добавления новой статьи -->
+            <section id="add-article-section" class="section">
+                <h2>Добавить новую статью</h2>
+                <form id="article-form" class="article-form">
+                    <input type="text" id="article-title" placeholder="Заголовок статьи" required>
+                    <textarea id="article-content" placeholder="Текст статьи" rows="10" required></textarea>
+                    <button type="submit" class="btn-primary">Опубликовать статью</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Минималистичный блог. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
